@@ -1,0 +1,14 @@
+docker pull verlai/verl:app-verl0.5-transformers4.55.4-sglang0.4.10.post2-mcore0.13.0-te2.2
+docker create --runtime=nvidia --gpus all --net=host --shm-size="80g"  -v .:/workspace/ --name pokeeresearch verlai/verl:app-verl0.5-transformers4.55.4-sglang0.4.10.post2-mcore0.13.0-te2.2 sleep infinity
+docker start pokeeresearch
+docker exec -it pokeeresearch  bash
+ssh-keygen -t ed25519 -C <USER_NAME>
+# copy /root/.ssh/id_ed25519.pub to github ssh keys
+git clone git@github.com:Pokee-AI/PokeeResearchOSS.git --recursive
+cd PokeeResearchOSS
+pip install colorlog
+pip install -U google-genai
+hf auth login # enter your huggingface token, the tokens needs to have permission to use Pokee AI's models
+cd verl
+pip install -e .
+cd ..
